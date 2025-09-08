@@ -1,0 +1,46 @@
+# Corrected values file for wiz-kubernetes-integration
+# This configuration allows each subchart to use its own wizApiToken secret
+# instead of a shared global one.
+
+global:
+  wizApiToken:
+    secret:
+      create: false
+      name: ""  # Clear the default global secret name so subcharts use their own
+
+wiz-kubernetes-connector:
+  enabled: true
+  wizApiToken:
+    clientId: "test-connector-client-id"
+    clientToken: "test-connector-client-token"
+    secret:
+      create: false
+      name: wiz-api-token
+  autoCreateConnector:
+    clusterFlavor: Kubernetes
+    connectorName: shirilla-docker
+  wiz-broker:
+    enabled: true
+    wizApiToken:
+      secret:
+        name: wiz-api-token
+
+wiz-sensor:
+  enabled: true
+  wizApiToken:
+    clientId: "test-sensor-client-id"
+    clientToken: "test-sensor-client-token"
+    secret:
+      create: false
+      name: wiz-api-token-2
+  imagePullSecret:
+    create: false
+    name: sensor-image-pull
+  sensorClusterName: shirilla-azure-kubeadm
+
+wiz-admission-controller:
+  enabled: false
+  replicaCount: 1
+  kubernetesAuditLogsWebhook:
+    enabled: true
+    replicaCount: 1
